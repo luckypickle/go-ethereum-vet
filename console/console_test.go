@@ -26,12 +26,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/internal/jsre"
-	"github.com/ethereum/go-ethereum/node"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/consensus/ethash"
+	"github.com/luckypickle/go-ethereum-vet/core"
+	"github.com/luckypickle/go-ethereum-vet/eth"
+	"github.com/luckypickle/go-ethereum-vet/internal/jsre"
+	"github.com/luckypickle/go-ethereum-vet/node"
 )
 
 const (

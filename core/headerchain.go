@@ -26,14 +26,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
 	"github.com/hashicorp/golang-lru"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/consensus"
+	"github.com/luckypickle/go-ethereum-vet/core/rawdb"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
+	"github.com/luckypickle/go-ethereum-vet/ethdb"
+	"github.com/luckypickle/go-ethereum-vet/log"
+	"github.com/luckypickle/go-ethereum-vet/params"
 )
 
 const (
@@ -67,9 +67,10 @@ type HeaderChain struct {
 }
 
 // NewHeaderChain creates a new HeaderChain structure.
-//  getValidator should return the parent's validator
-//  procInterrupt points to the parent's interrupt semaphore
-//  wg points to the parent's shutdown wait group
+//
+//	getValidator should return the parent's validator
+//	procInterrupt points to the parent's interrupt semaphore
+//	wg points to the parent's shutdown wait group
 func NewHeaderChain(chainDb ethdb.Database, config *params.ChainConfig, engine consensus.Engine, procInterrupt func() bool) (*HeaderChain, error) {
 	headerCache, _ := lru.New(headerCacheLimit)
 	tdCache, _ := lru.New(tdCacheLimit)

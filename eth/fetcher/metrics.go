@@ -19,7 +19,7 @@
 package fetcher
 
 import (
-	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/luckypickle/go-ethereum-vet/metrics"
 )
 
 var (

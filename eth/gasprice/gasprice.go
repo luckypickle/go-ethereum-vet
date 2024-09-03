@@ -22,11 +22,11 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
+	"github.com/luckypickle/go-ethereum-vet/internal/ethapi"
+	"github.com/luckypickle/go-ethereum-vet/params"
+	"github.com/luckypickle/go-ethereum-vet/rpc"
 )
 
 var maxPrice = big.NewInt(500 * params.Shannon)

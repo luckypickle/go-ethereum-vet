@@ -25,11 +25,11 @@ import (
 	"net"
 	"time"
 
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/p2p/netutil"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/luckypickle/go-ethereum-vet/crypto"
+	"github.com/luckypickle/go-ethereum-vet/log"
+	"github.com/luckypickle/go-ethereum-vet/p2p/nat"
+	"github.com/luckypickle/go-ethereum-vet/p2p/netutil"
+	"github.com/luckypickle/go-ethereum-vet/rlp"
 )
 
 // Errors

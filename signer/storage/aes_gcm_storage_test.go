@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
-//
 package storage
 
 import (
@@ -22,8 +21,8 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/log"
 	"github.com/mattn/go-colorable"
 )
 

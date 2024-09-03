@@ -31,9 +31,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/crypto"
+	"github.com/luckypickle/go-ethereum-vet/crypto/secp256k1"
 )
 
 const NodeIDBits = 512
@@ -125,8 +125,8 @@ var incompleteNodeURL = regexp.MustCompile("(?i)^(?:enode://)?([0-9a-f]+)$")
 //
 // For incomplete nodes, the designator must look like one of these
 //
-//    enode://<hex node id>
-//    <hex node id>
+//	enode://<hex node id>
+//	<hex node id>
 //
 // For complete nodes, the node ID is encoded in the username portion
 // of the URL, separated from the host by an @ sign. The hostname can
@@ -139,7 +139,7 @@ var incompleteNodeURL = regexp.MustCompile("(?i)^(?:enode://)?([0-9a-f]+)$")
 // a node with IP address 10.3.58.6, TCP listening port 30303
 // and UDP discovery port 30301.
 //
-//    enode://<hex node id>@10.3.58.6:30303?discport=30301
+//	enode://<hex node id>@10.3.58.6:30303?discport=30301
 func ParseNode(rawurl string) (*Node, error) {
 	if m := incompleteNodeURL.FindStringSubmatch(rawurl); m != nil {
 		id, err := HexID(m[1])

@@ -27,11 +27,11 @@ import (
 
 	cli "gopkg.in/urfave/cli.v1"
 
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/params"
-	whisper "github.com/ethereum/go-ethereum/whisper/whisperv6"
+	"github.com/luckypickle/go-ethereum-vet/cmd/utils"
+	"github.com/luckypickle/go-ethereum-vet/eth"
+	"github.com/luckypickle/go-ethereum-vet/node"
+	"github.com/luckypickle/go-ethereum-vet/params"
+	whisper "github.com/luckypickle/go-ethereum-vet/whisper/whisperv6"
 	"github.com/naoina/toml"
 )
 

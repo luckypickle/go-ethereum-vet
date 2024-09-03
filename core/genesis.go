@@ -25,16 +25,16 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/common/hexutil"
+	"github.com/luckypickle/go-ethereum-vet/common/math"
+	"github.com/luckypickle/go-ethereum-vet/core/rawdb"
+	"github.com/luckypickle/go-ethereum-vet/core/state"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
+	"github.com/luckypickle/go-ethereum-vet/ethdb"
+	"github.com/luckypickle/go-ethereum-vet/log"
+	"github.com/luckypickle/go-ethereum-vet/params"
+	"github.com/luckypickle/go-ethereum-vet/rlp"
 )
 
 //go:generate gencodec -type Genesis -field-override genesisSpecMarshaling -out gen_genesis.go
@@ -140,10 +140,10 @@ func (e *GenesisMismatchError) Error() string {
 // SetupGenesisBlock writes or updates the genesis block in db.
 // The block that will be used is:
 //
-//                          genesis == nil       genesis != nil
-//                       +------------------------------------------
-//     db has no genesis |  main-net default  |  genesis
-//     db has genesis    |  from DB           |  genesis (if compatible)
+//	                     genesis == nil       genesis != nil
+//	                  +------------------------------------------
+//	db has no genesis |  main-net default  |  genesis
+//	db has genesis    |  from DB           |  genesis (if compatible)
 //
 // The stored chain configuration will be updated if it is compatible (i.e. does not
 // specify a fork block below the local head block). In case of a conflict, the
@@ -355,7 +355,7 @@ func DeveloperGenesisBlock(period uint64, faucet common.Address) *Genesis {
 			common.BytesToAddress([]byte{6}): {Balance: big.NewInt(1)}, // ECAdd
 			common.BytesToAddress([]byte{7}): {Balance: big.NewInt(1)}, // ECScalarMul
 			common.BytesToAddress([]byte{8}): {Balance: big.NewInt(1)}, // ECPairing
-			faucet: {Balance: new(big.Int).Sub(new(big.Int).Lsh(big.NewInt(1), 256), big.NewInt(9))},
+			faucet:                           {Balance: new(big.Int).Sub(new(big.Int).Lsh(big.NewInt(1), 256), big.NewInt(9))},
 		},
 	}
 }

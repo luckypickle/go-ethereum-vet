@@ -22,9 +22,9 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/console"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/luckypickle/go-ethereum-vet/cmd/utils"
+	"github.com/luckypickle/go-ethereum-vet/console"
+	"github.com/luckypickle/go-ethereum-vet/crypto"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -72,7 +72,8 @@ func getPassphrase(ctx *cli.Context) string {
 // that can be safely used to calculate a signature from.
 //
 // The hash is calulcated as
-//   keccak256("\x19Ethereum Signed Message:\n"${message length}${message}).
+//
+//	keccak256("\x19Ethereum Signed Message:\n"${message length}${message}).
 //
 // This gives context to the signed message and prevents signing of transactions.
 func signHash(data []byte) []byte {

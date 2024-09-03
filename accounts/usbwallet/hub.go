@@ -22,10 +22,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
 	"github.com/karalabe/hid"
+	"github.com/luckypickle/go-ethereum-vet/accounts"
+	"github.com/luckypickle/go-ethereum-vet/event"
+	"github.com/luckypickle/go-ethereum-vet/log"
 )
 
 // LedgerScheme is the protocol scheme prefixing account and wallet URLs.

@@ -25,12 +25,12 @@ import (
 	"sync"
 	"time"
 
-	ethereum "github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
 	"github.com/karalabe/hid"
+	ethereum "github.com/luckypickle/go-ethereum-vet"
+	"github.com/luckypickle/go-ethereum-vet/accounts"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
+	"github.com/luckypickle/go-ethereum-vet/log"
 )
 
 // Maximum time between wallet health checks to detect USB unplugs.

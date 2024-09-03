@@ -24,17 +24,17 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/common/hexutil"
+	"github.com/luckypickle/go-ethereum-vet/common/math"
+	"github.com/luckypickle/go-ethereum-vet/consensus/ethash"
+	"github.com/luckypickle/go-ethereum-vet/core"
+	"github.com/luckypickle/go-ethereum-vet/core/state"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
+	"github.com/luckypickle/go-ethereum-vet/core/vm"
+	"github.com/luckypickle/go-ethereum-vet/ethdb"
+	"github.com/luckypickle/go-ethereum-vet/params"
+	"github.com/luckypickle/go-ethereum-vet/rlp"
 )
 
 // A BlockTest checks handling of entire blocks.
@@ -151,17 +151,18 @@ func (t *BlockTest) genesis(config *params.ChainConfig) *core.Genesis {
 	}
 }
 
-/* See https://github.com/ethereum/tests/wiki/Blockchain-Tests-II
+/*
+See https://github.com/ethereum/tests/wiki/Blockchain-Tests-II
 
-   Whether a block is valid or not is a bit subtle, it's defined by presence of
-   blockHeader, transactions and uncleHeaders fields. If they are missing, the block is
-   invalid and we must verify that we do not accept it.
+	Whether a block is valid or not is a bit subtle, it's defined by presence of
+	blockHeader, transactions and uncleHeaders fields. If they are missing, the block is
+	invalid and we must verify that we do not accept it.
 
-   Since some tests mix valid and invalid blocks we need to check this for every block.
+	Since some tests mix valid and invalid blocks we need to check this for every block.
 
-   If a block is invalid it does not necessarily fail the test, if it's invalidness is
-   expected we are expected to ignore it and continue processing and then validate the
-   post state.
+	If a block is invalid it does not necessarily fail the test, if it's invalidness is
+	expected we are expected to ignore it and continue processing and then validate the
+	post state.
 */
 func (t *BlockTest) insertBlocks(blockchain *core.BlockChain) ([]btBlock, error) {
 	validBlocks := make([]btBlock, 0)

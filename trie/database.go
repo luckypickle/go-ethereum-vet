@@ -22,11 +22,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/ethdb"
+	"github.com/luckypickle/go-ethereum-vet/log"
+	"github.com/luckypickle/go-ethereum-vet/metrics"
+	"github.com/luckypickle/go-ethereum-vet/rlp"
 )
 
 var (
@@ -124,9 +124,11 @@ type rawShortNode struct {
 	Val node
 }
 
-func (n rawShortNode) canUnload(uint16, uint16) bool { panic("this should never end up in a live trie") }
-func (n rawShortNode) cache() (hashNode, bool)       { panic("this should never end up in a live trie") }
-func (n rawShortNode) fstring(ind string) string     { panic("this should never end up in a live trie") }
+func (n rawShortNode) canUnload(uint16, uint16) bool {
+	panic("this should never end up in a live trie")
+}
+func (n rawShortNode) cache() (hashNode, bool)   { panic("this should never end up in a live trie") }
+func (n rawShortNode) fstring(ind string) string { panic("this should never end up in a live trie") }
 
 // cachedNode is all the information we know about a single cached node in the
 // memory database write layer.

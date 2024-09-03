@@ -17,15 +17,14 @@
 package core
 
 import (
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/luckypickle/go-ethereum-vet/core/state"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
+	"github.com/luckypickle/go-ethereum-vet/core/vm"
 )
 
 // Validator is an interface which defines the standard for block validation. It
 // is only responsible for validating block contents, as the header validation is
 // done by the specific consensus engines.
-//
 type Validator interface {
 	// ValidateBody validates the given block's content.
 	ValidateBody(block *types.Block) error

@@ -19,9 +19,9 @@ package ethash
 import (
 	"errors"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/common/hexutil"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
 )
 
 var errEthashStopped = errors.New("ethash stopped")
@@ -34,9 +34,10 @@ type API struct {
 // GetWork returns a work package for external miner.
 //
 // The work package consists of 3 strings:
-//   result[0] - 32 bytes hex encoded current block header pow-hash
-//   result[1] - 32 bytes hex encoded seed hash used for DAG
-//   result[2] - 32 bytes hex encoded boundary condition ("target"), 2^256/difficulty
+//
+//	result[0] - 32 bytes hex encoded current block header pow-hash
+//	result[1] - 32 bytes hex encoded seed hash used for DAG
+//	result[2] - 32 bytes hex encoded boundary condition ("target"), 2^256/difficulty
 func (api *API) GetWork() ([3]string, error) {
 	if api.ethash.config.PowMode != ModeNormal && api.ethash.config.PowMode != ModeTest {
 		return [3]string{}, errors.New("not supported")

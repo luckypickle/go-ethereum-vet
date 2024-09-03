@@ -24,11 +24,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/p2p/simulations/adapters"
+	"github.com/luckypickle/go-ethereum-vet/event"
+	"github.com/luckypickle/go-ethereum-vet/log"
+	"github.com/luckypickle/go-ethereum-vet/p2p"
+	"github.com/luckypickle/go-ethereum-vet/p2p/discover"
+	"github.com/luckypickle/go-ethereum-vet/p2p/simulations/adapters"
 )
 
 var DialBanTimeout = 200 * time.Millisecond
@@ -500,8 +500,8 @@ func (net *Network) Shutdown() {
 	close(net.quitc)
 }
 
-//Reset resets all network properties:
-//emtpies the nodes and the connection list
+// Reset resets all network properties:
+// emtpies the nodes and the connection list
 func (net *Network) Reset() {
 	net.lock.Lock()
 	defer net.lock.Unlock()

@@ -23,12 +23,12 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
+	"github.com/luckypickle/go-ethereum-vet/crypto"
+	"github.com/luckypickle/go-ethereum-vet/log"
+	"github.com/luckypickle/go-ethereum-vet/rlp"
+	"github.com/luckypickle/go-ethereum-vet/trie"
 )
 
 type revision struct {
@@ -419,8 +419,8 @@ func (self *StateDB) createObject(addr common.Address) (newobj, prev *stateObjec
 // CreateAccount is called during the EVM CREATE operation. The situation might arise that
 // a contract does the following:
 //
-//   1. sends funds to sha(account ++ (nonce + 1))
-//   2. tx_create(sha(account ++ nonce)) (note that this gets the address of 1)
+//  1. sends funds to sha(account ++ (nonce + 1))
+//  2. tx_create(sha(account ++ nonce)) (note that this gets the address of 1)
 //
 // Carrying over the balance ensures that Ether doesn't disappear.
 func (self *StateDB) CreateAccount(addr common.Address) {
@@ -471,7 +471,7 @@ func (self *StateDB) Copy() *StateDB {
 	}
 	// Copy the dirty states, logs, and preimages
 	for addr := range self.journal.dirties {
-		// As documented [here](https://github.com/ethereum/go-ethereum/pull/16485#issuecomment-380438527),
+		// As documented [here](https://github.com/luckypickle/go-ethereum-vet/pull/16485#issuecomment-380438527),
 		// and in the Finalise-method, there is a case where an object is in the journal but not
 		// in the stateObjects: OOG after touch on ripeMD prior to Byzantium. Thus, we need to check for
 		// nil

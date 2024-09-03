@@ -23,18 +23,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/luckypickle/go-ethereum-vet/common"
+	"github.com/luckypickle/go-ethereum-vet/consensus/ethash"
+	"github.com/luckypickle/go-ethereum-vet/core"
+	"github.com/luckypickle/go-ethereum-vet/core/state"
+	"github.com/luckypickle/go-ethereum-vet/core/types"
+	"github.com/luckypickle/go-ethereum-vet/core/vm"
+	"github.com/luckypickle/go-ethereum-vet/crypto"
+	"github.com/luckypickle/go-ethereum-vet/eth/downloader"
+	"github.com/luckypickle/go-ethereum-vet/ethdb"
+	"github.com/luckypickle/go-ethereum-vet/event"
+	"github.com/luckypickle/go-ethereum-vet/p2p"
+	"github.com/luckypickle/go-ethereum-vet/params"
 )
 
 // Tests that protocol versions and modes of operations are matched up properly.
@@ -242,10 +242,10 @@ func testGetBlockBodies(t *testing.T, protocol int) {
 		available []bool        // Availability of explicitly requested blocks
 		expected  int           // Total number of existing blocks to expect
 	}{
-		{1, nil, nil, 1},                                                         // A single random block should be retrievable
-		{10, nil, nil, 10},                                                       // Multiple random blocks should be retrievable
-		{limit, nil, nil, limit},                                                 // The maximum possible blocks should be retrievable
-		{limit + 1, nil, nil, limit},                                             // No more than the possible block count should be returned
+		{1, nil, nil, 1},             // A single random block should be retrievable
+		{10, nil, nil, 10},           // Multiple random blocks should be retrievable
+		{limit, nil, nil, limit},     // The maximum possible blocks should be retrievable
+		{limit + 1, nil, nil, limit}, // No more than the possible block count should be returned
 		{0, []common.Hash{pm.blockchain.Genesis().Hash()}, []bool{true}, 1},      // The genesis block should be retrievable
 		{0, []common.Hash{pm.blockchain.CurrentBlock().Hash()}, []bool{true}, 1}, // The chains head block should be retrievable
 		{0, []common.Hash{{}}, []bool{false}, 0},                                 // A non existent block should not be returned
