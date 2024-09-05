@@ -1,6 +1,6 @@
 module github.com/luckypickle/go-ethereum-vet
 
-go 1.23
+go 1.22
 
 require (
 	github.com/Azure/azure-storage-blob-go v0.0.0-20180712005634-eaae161d9d5e

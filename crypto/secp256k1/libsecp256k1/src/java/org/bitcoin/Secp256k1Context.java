@@ -29,7 +29,7 @@ public class Secp256k1Context {
       long contextRef = -1;
       try {
           System.loadLibrary("secp256k1");
-          contextRef = secp256k1_init_context();
+          contextRef = vet_secp256k1_init_context();
       } catch (UnsatisfiedLinkError e) {
           System.out.println("UnsatisfiedLinkError: " + e.toString());
           isEnabled = false;
@@ -47,5 +47,5 @@ public class Secp256k1Context {
      return context;
   }
 
-  private static native long secp256k1_init_context();
+  private static native long vet_secp256k1_init_context();
 }

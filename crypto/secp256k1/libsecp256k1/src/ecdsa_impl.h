@@ -28,7 +28,7 @@
  *  sage: '%x' % (EllipticCurve ([F (a), F (b)]).order())
  *   'fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141'
  */
-static const secp256k1_fe secp256k1_ecdsa_const_order_as_fe = SECP256K1_FE_CONST(
+static const vet_secp256k1_fe vet_secp256k1_ecdsa_const_order_as_fe = SECP256K1_FE_CONST(
     0xFFFFFFFFUL, 0xFFFFFFFFUL, 0xFFFFFFFFUL, 0xFFFFFFFEUL,
     0xBAAEDCE6UL, 0xAF48A03BUL, 0xBFD25E8CUL, 0xD0364141UL
 );
@@ -42,11 +42,11 @@ static const secp256k1_fe secp256k1_ecdsa_const_order_as_fe = SECP256K1_FE_CONST
  *  sage: '%x' % (p - EllipticCurve ([F (a), F (b)]).order())
  *   '14551231950b75fc4402da1722fc9baee'
  */
-static const secp256k1_fe secp256k1_ecdsa_const_p_minus_order = SECP256K1_FE_CONST(
+static const vet_secp256k1_fe vet_secp256k1_ecdsa_const_p_minus_order = SECP256K1_FE_CONST(
     0, 0, 0, 1, 0x45512319UL, 0x50B75FC4UL, 0x402DA172UL, 0x2FC9BAEEUL
 );
 
-static int secp256k1_der_read_len(const unsigned char **sigp, const unsigned char *sigend) {
+static int vet_secp256k1_der_read_len(const unsigned char **sigp, const unsigned char *sigend) {
     int lenleft, b1;
     size_t ret = 0;
     if (*sigp >= sigend) {
@@ -98,7 +98,7 @@ static int secp256k1_der_read_len(const unsigned char **sigp, const unsigned cha
     return ret;
 }
 
-static int secp256k1_der_parse_integer(secp256k1_scalar *r, const unsigned char **sig, const unsigned char *sigend) {
+static int vet_secp256k1_der_parse_integer(vet_secp256k1_scalar *r, const unsigned char **sig, const unsigned char *sigend) {
     int overflow = 0;
     unsigned char ra[32] = {0};
     int rlen;
@@ -108,7 +108,7 @@ static int secp256k1_der_parse_integer(secp256k1_scalar *r, const unsigned char 
         return 0;
     }
     (*sig)++;
-    rlen = secp256k1_der_read_len(sig, sigend);
+    rlen = vet_secp256k1_der_read_len(sig, sigend);
     if (rlen <= 0 || (*sig) + rlen > sigend) {
         /* Exceeds bounds or not at least length 1 (X.690-0207 8.3.1).  */
         return 0;
@@ -135,23 +135,23 @@ static int secp256k1_der_parse_integer(secp256k1_scalar *r, const unsigned char 
     }
     if (!overflow) {
         memcpy(ra + 32 - rlen, *sig, rlen);
-        secp256k1_scalar_set_b32(r, ra, &overflow);
+        vet_secp256k1_scalar_set_b32(r, ra, &overflow);
     }
     if (overflow) {
-        secp256k1_scalar_set_int(r, 0);
+        vet_secp256k1_scalar_set_int(r, 0);
     }
     (*sig) += rlen;
     return 1;
 }
 
-static int secp256k1_ecdsa_sig_parse(secp256k1_scalar *rr, secp256k1_scalar *rs, const unsigned char *sig, size_t size) {
+static int vet_secp256k1_ecdsa_sig_parse(vet_secp256k1_scalar *rr, vet_secp256k1_scalar *rs, const unsigned char *sig, size_t size) {
     const unsigned char *sigend = sig + size;
     int rlen;
     if (sig == sigend || *(sig++) != 0x30) {
         /* The encoding doesn't start with a constructed sequence (X.690-0207 8.9.1). */
         return 0;
     }
-    rlen = secp256k1_der_read_len(&sig, sigend);
+    rlen = vet_secp256k1_der_read_len(&sig, sigend);
     if (rlen < 0 || sig + rlen > sigend) {
         /* Tuple exceeds bounds */
         return 0;
@@ -161,10 +161,10 @@ static int secp256k1_ecdsa_sig_parse(secp256k1_scalar *rr, secp256k1_scalar *rs,
         return 0;
     }
 
-    if (!secp256k1_der_parse_integer(rr, &sig, sigend)) {
+    if (!vet_secp256k1_der_parse_integer(rr, &sig, sigend)) {
         return 0;
     }
-    if (!secp256k1_der_parse_integer(rs, &sig, sigend)) {
+    if (!vet_secp256k1_der_parse_integer(rs, &sig, sigend)) {
         return 0;
     }
 
@@ -176,12 +176,12 @@ static int secp256k1_ecdsa_sig_parse(secp256k1_scalar *rr, secp256k1_scalar *rs,
     return 1;
 }
 
-static int secp256k1_ecdsa_sig_serialize(unsigned char *sig, size_t *size, const secp256k1_scalar* ar, const secp256k1_scalar* as) {
+static int vet_secp256k1_ecdsa_sig_serialize(unsigned char *sig, size_t *size, const vet_secp256k1_scalar* ar, const vet_secp256k1_scalar* as) {
     unsigned char r[33] = {0}, s[33] = {0};
     unsigned char *rp = r, *sp = s;
     size_t lenR = 33, lenS = 33;
-    secp256k1_scalar_get_b32(&r[1], ar);
-    secp256k1_scalar_get_b32(&s[1], as);
+    vet_secp256k1_scalar_get_b32(&r[1], ar);
+    vet_secp256k1_scalar_get_b32(&s[1], as);
     while (lenR > 1 && rp[0] == 0 && rp[1] < 0x80) { lenR--; rp++; }
     while (lenS > 1 && sp[0] == 0 && sp[1] < 0x80) { lenS--; sp++; }
     if (*size < 6+lenS+lenR) {
@@ -200,42 +200,42 @@ static int secp256k1_ecdsa_sig_serialize(unsigned char *sig, size_t *size, const
     return 1;
 }
 
-static int secp256k1_ecdsa_sig_verify(const secp256k1_ecmult_context *ctx, const secp256k1_scalar *sigr, const secp256k1_scalar *sigs, const secp256k1_ge *pubkey, const secp256k1_scalar *message) {
+static int vet_secp256k1_ecdsa_sig_verify(const vet_secp256k1_ecmult_context *ctx, const vet_secp256k1_scalar *sigr, const vet_secp256k1_scalar *sigs, const vet_secp256k1_ge *pubkey, const vet_secp256k1_scalar *message) {
     unsigned char c[32];
-    secp256k1_scalar sn, u1, u2;
+    vet_secp256k1_scalar sn, u1, u2;
 #if !defined(EXHAUSTIVE_TEST_ORDER)
-    secp256k1_fe xr;
+    vet_secp256k1_fe xr;
 #endif
-    secp256k1_gej pubkeyj;
-    secp256k1_gej pr;
+    vet_secp256k1_gej pubkeyj;
+    vet_secp256k1_gej pr;
 
-    if (secp256k1_scalar_is_zero(sigr) || secp256k1_scalar_is_zero(sigs)) {
+    if (vet_secp256k1_scalar_is_zero(sigr) || vet_secp256k1_scalar_is_zero(sigs)) {
         return 0;
     }
 
-    secp256k1_scalar_inverse_var(&sn, sigs);
-    secp256k1_scalar_mul(&u1, &sn, message);
-    secp256k1_scalar_mul(&u2, &sn, sigr);
-    secp256k1_gej_set_ge(&pubkeyj, pubkey);
-    secp256k1_ecmult(ctx, &pr, &pubkeyj, &u2, &u1);
-    if (secp256k1_gej_is_infinity(&pr)) {
+    vet_secp256k1_scalar_inverse_var(&sn, sigs);
+    vet_secp256k1_scalar_mul(&u1, &sn, message);
+    vet_secp256k1_scalar_mul(&u2, &sn, sigr);
+    vet_secp256k1_gej_set_ge(&pubkeyj, pubkey);
+    vet_secp256k1_ecmult(ctx, &pr, &pubkeyj, &u2, &u1);
+    if (vet_secp256k1_gej_is_infinity(&pr)) {
         return 0;
     }
 
 #if defined(EXHAUSTIVE_TEST_ORDER)
 {
-    secp256k1_scalar computed_r;
-    secp256k1_ge pr_ge;
-    secp256k1_ge_set_gej(&pr_ge, &pr);
-    secp256k1_fe_normalize(&pr_ge.x);
+    vet_secp256k1_scalar computed_r;
+    vet_secp256k1_ge pr_ge;
+    vet_secp256k1_ge_set_gej(&pr_ge, &pr);
+    vet_secp256k1_fe_normalize(&pr_ge.x);
 
-    secp256k1_fe_get_b32(c, &pr_ge.x);
-    secp256k1_scalar_set_b32(&computed_r, c, NULL);
-    return secp256k1_scalar_eq(sigr, &computed_r);
+    vet_secp256k1_fe_get_b32(c, &pr_ge.x);
+    vet_secp256k1_scalar_set_b32(&computed_r, c, NULL);
+    return vet_secp256k1_scalar_eq(sigr, &computed_r);
 }
 #else
-    secp256k1_scalar_get_b32(c, sigr);
-    secp256k1_fe_set_b32(&xr, c);
+    vet_secp256k1_scalar_get_b32(c, sigr);
+    vet_secp256k1_fe_set_b32(&xr, c);
 
     /** We now have the recomputed R point in pr, and its claimed x coordinate (modulo n)
      *  in xr. Naively, we would extract the x coordinate from pr (requiring a inversion modulo p),
@@ -253,16 +253,16 @@ static int secp256k1_ecdsa_sig_verify(const secp256k1_ecmult_context *ctx, const
      *  Thus, we can avoid the inversion, but we have to check both cases separately.
      *  secp256k1_gej_eq_x implements the (xr * pr.z^2 mod p == pr.x) test.
      */
-    if (secp256k1_gej_eq_x_var(&xr, &pr)) {
+    if (vet_secp256k1_gej_eq_x_var(&xr, &pr)) {
         /* xr * pr.z^2 mod p == pr.x, so the signature is valid. */
         return 1;
     }
-    if (secp256k1_fe_cmp_var(&xr, &secp256k1_ecdsa_const_p_minus_order) >= 0) {
+    if (vet_secp256k1_fe_cmp_var(&xr, &vet_secp256k1_ecdsa_const_p_minus_order) >= 0) {
         /* xr + n >= p, so we can skip testing the second case. */
         return 0;
     }
-    secp256k1_fe_add(&xr, &secp256k1_ecdsa_const_order_as_fe);
-    if (secp256k1_gej_eq_x_var(&xr, &pr)) {
+    vet_secp256k1_fe_add(&xr, &vet_secp256k1_ecdsa_const_order_as_fe);
+    if (vet_secp256k1_gej_eq_x_var(&xr, &pr)) {
         /* (xr + n) * pr.z^2 mod p == pr.x, so the signature is valid. */
         return 1;
     }
@@ -270,41 +270,41 @@ static int secp256k1_ecdsa_sig_verify(const secp256k1_ecmult_context *ctx, const
 #endif
 }
 
-static int secp256k1_ecdsa_sig_sign(const secp256k1_ecmult_gen_context *ctx, secp256k1_scalar *sigr, secp256k1_scalar *sigs, const secp256k1_scalar *seckey, const secp256k1_scalar *message, const secp256k1_scalar *nonce, int *recid) {
+static int vet_secp256k1_ecdsa_sig_sign(const vet_secp256k1_ecmult_gen_context *ctx, vet_secp256k1_scalar *sigr, vet_secp256k1_scalar *sigs, const vet_secp256k1_scalar *seckey, const vet_secp256k1_scalar *message, const vet_secp256k1_scalar *nonce, int *recid) {
     unsigned char b[32];
-    secp256k1_gej rp;
-    secp256k1_ge r;
-    secp256k1_scalar n;
+    vet_secp256k1_gej rp;
+    vet_secp256k1_ge r;
+    vet_secp256k1_scalar n;
     int overflow = 0;
 
-    secp256k1_ecmult_gen(ctx, &rp, nonce);
-    secp256k1_ge_set_gej(&r, &rp);
-    secp256k1_fe_normalize(&r.x);
-    secp256k1_fe_normalize(&r.y);
-    secp256k1_fe_get_b32(b, &r.x);
-    secp256k1_scalar_set_b32(sigr, b, &overflow);
+    vet_secp256k1_ecmult_gen(ctx, &rp, nonce);
+    vet_secp256k1_ge_set_gej(&r, &rp);
+    vet_secp256k1_fe_normalize(&r.x);
+    vet_secp256k1_fe_normalize(&r.y);
+    vet_secp256k1_fe_get_b32(b, &r.x);
+    vet_secp256k1_scalar_set_b32(sigr, b, &overflow);
     /* These two conditions should be checked before calling */
-    VERIFY_CHECK(!secp256k1_scalar_is_zero(sigr));
+    VERIFY_CHECK(!vet_secp256k1_scalar_is_zero(sigr));
     VERIFY_CHECK(overflow == 0);
 
     if (recid) {
         /* The overflow condition is cryptographically unreachable as hitting it requires finding the discrete log
          * of some P where P.x >= order, and only 1 in about 2^127 points meet this criteria.
          */
-        *recid = (overflow ? 2 : 0) | (secp256k1_fe_is_odd(&r.y) ? 1 : 0);
+        *recid = (overflow ? 2 : 0) | (vet_secp256k1_fe_is_odd(&r.y) ? 1 : 0);
     }
-    secp256k1_scalar_mul(&n, sigr, seckey);
-    secp256k1_scalar_add(&n, &n, message);
-    secp256k1_scalar_inverse(sigs, nonce);
-    secp256k1_scalar_mul(sigs, sigs, &n);
-    secp256k1_scalar_clear(&n);
-    secp256k1_gej_clear(&rp);
-    secp256k1_ge_clear(&r);
-    if (secp256k1_scalar_is_zero(sigs)) {
+    vet_secp256k1_scalar_mul(&n, sigr, seckey);
+    vet_secp256k1_scalar_add(&n, &n, message);
+    vet_secp256k1_scalar_inverse(sigs, nonce);
+    vet_secp256k1_scalar_mul(sigs, sigs, &n);
+    vet_secp256k1_scalar_clear(&n);
+    vet_secp256k1_gej_clear(&rp);
+    vet_secp256k1_ge_clear(&r);
+    if (vet_secp256k1_scalar_is_zero(sigs)) {
         return 0;
     }
-    if (secp256k1_scalar_is_high(sigs)) {
-        secp256k1_scalar_negate(sigs, sigs);
+    if (vet_secp256k1_scalar_is_high(sigs)) {
+        vet_secp256k1_scalar_negate(sigs, sigs);
         if (recid) {
             *recid ^= 1;
         }

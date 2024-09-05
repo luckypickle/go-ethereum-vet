@@ -19,13 +19,13 @@ static void default_error_callback_fn(const char* str, void* data) {
     abort();
 }
 
-static const secp256k1_callback default_error_callback = {
+static const vet_secp256k1_callback default_error_callback = {
     default_error_callback_fn,
     NULL
 };
 
 int main(int argc, char **argv) {
-    secp256k1_ecmult_gen_context ctx;
+    vet_secp256k1_ecmult_gen_context ctx;
     int inner;
     int outer;
     FILE* fp;
@@ -45,8 +45,8 @@ int main(int argc, char **argv) {
     fprintf(fp, "#define SC SECP256K1_GE_STORAGE_CONST\n");
     fprintf(fp, "static const secp256k1_ge_storage secp256k1_ecmult_static_context[64][16] = {\n");
 
-    secp256k1_ecmult_gen_context_init(&ctx);
-    secp256k1_ecmult_gen_context_build(&ctx, &default_error_callback);
+    vet_secp256k1_ecmult_gen_context_init(&ctx);
+    vet_secp256k1_ecmult_gen_context_build(&ctx, &default_error_callback);
     for(outer = 0; outer != 64; outer++) {
         fprintf(fp,"{\n");
         for(inner = 0; inner != 16; inner++) {
@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
         }
     }
     fprintf(fp,"};\n");
-    secp256k1_ecmult_gen_context_clear(&ctx);
+    vet_secp256k1_ecmult_gen_context_clear(&ctx);
     
     fprintf(fp, "#undef SC\n");
     fprintf(fp, "#endif\n");

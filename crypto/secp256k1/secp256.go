@@ -42,13 +42,13 @@ import (
 	"unsafe"
 )
 
-var context *C.secp256k1_context
+var context *C.vet_secp256k1_context
 
 func init() {
 	// around 20 ms on a modern CPU.
-	context = C.secp256k1_context_create_sign_verify()
-	C.secp256k1_context_set_illegal_callback(context, C.callbackFunc(C.secp256k1GoPanicIllegal), nil)
-	C.secp256k1_context_set_error_callback(context, C.callbackFunc(C.secp256k1GoPanicError), nil)
+	context = C.vet_secp256k1_context_create_sign_verify()
+	C.vet_secp256k1_context_set_illegal_callback(context, C.callbackFunc(C.secp256k1GoPanicIllegal), nil)
+	C.vet_secp256k1_context_set_error_callback(context, C.callbackFunc(C.secp256k1GoPanicError), nil)
 }
 
 var (
@@ -75,16 +75,16 @@ func Sign(msg []byte, seckey []byte) ([]byte, error) {
 		return nil, ErrInvalidKey
 	}
 	seckeydata := (*C.uchar)(unsafe.Pointer(&seckey[0]))
-	if C.secp256k1_ec_seckey_verify(context, seckeydata) != 1 {
+	if C.vet_secp256k1_ec_seckey_verify(context, seckeydata) != 1 {
 		return nil, ErrInvalidKey
 	}
 
 	var (
 		msgdata   = (*C.uchar)(unsafe.Pointer(&msg[0]))
-		noncefunc = C.secp256k1_nonce_function_rfc6979
-		sigstruct C.secp256k1_ecdsa_recoverable_signature
+		noncefunc = C.vet_secp256k1_nonce_function_rfc6979
+		sigstruct C.vet_secp256k1_ecdsa_recoverable_signature
 	)
-	if C.secp256k1_ecdsa_sign_recoverable(context, &sigstruct, msgdata, seckeydata, noncefunc, nil) == 0 {
+	if C.vet_secp256k1_ecdsa_sign_recoverable(context, &sigstruct, msgdata, seckeydata, noncefunc, nil) == 0 {
 		return nil, ErrSignFailed
 	}
 
@@ -93,7 +93,7 @@ func Sign(msg []byte, seckey []byte) ([]byte, error) {
 		sigdata = (*C.uchar)(unsafe.Pointer(&sig[0]))
 		recid   C.int
 	)
-	C.secp256k1_ecdsa_recoverable_signature_serialize_compact(context, sigdata, &recid, &sigstruct)
+	C.vet_secp256k1_ecdsa_recoverable_signature_serialize_compact(context, sigdata, &recid, &sigstruct)
 	sig[64] = byte(recid) // add back recid to get 65 bytes sig
 	return sig, nil
 }
@@ -115,7 +115,7 @@ func RecoverPubkey(msg []byte, sig []byte) ([]byte, error) {
 		sigdata = (*C.uchar)(unsafe.Pointer(&sig[0]))
 		msgdata = (*C.uchar)(unsafe.Pointer(&msg[0]))
 	)
-	if C.secp256k1_ext_ecdsa_recover(context, (*C.uchar)(unsafe.Pointer(&pubkey[0])), sigdata, msgdata) == 0 {
+	if C.vet_secp256k1_ext_ecdsa_recover(context, (*C.uchar)(unsafe.Pointer(&pubkey[0])), sigdata, msgdata) == 0 {
 		return nil, ErrRecoverFailed
 	}
 	return pubkey, nil
@@ -130,7 +130,7 @@ func VerifySignature(pubkey, msg, signature []byte) bool {
 	sigdata := (*C.uchar)(unsafe.Pointer(&signature[0]))
 	msgdata := (*C.uchar)(unsafe.Pointer(&msg[0]))
 	keydata := (*C.uchar)(unsafe.Pointer(&pubkey[0]))
-	return C.secp256k1_ext_ecdsa_verify(context, sigdata, msgdata, keydata, C.size_t(len(pubkey))) != 0
+	return C.vet_secp256k1_ext_ecdsa_verify(context, sigdata, msgdata, keydata, C.size_t(len(pubkey))) != 0
 }
 
 // DecompressPubkey parses a public key in the 33-byte compressed format.
@@ -146,7 +146,7 @@ func DecompressPubkey(pubkey []byte) (x, y *big.Int) {
 		outdata    = (*C.uchar)(unsafe.Pointer(&out[0]))
 		outlen     = C.size_t(len(out))
 	)
-	if C.secp256k1_ext_reencode_pubkey(context, outdata, outlen, pubkeydata, pubkeylen) == 0 {
+	if C.vet_secp256k1_ext_reencode_pubkey(context, outdata, outlen, pubkeydata, pubkeylen) == 0 {
 		return nil, nil
 	}
 	return new(big.Int).SetBytes(out[1:33]), new(big.Int).SetBytes(out[33:])
@@ -162,7 +162,7 @@ func CompressPubkey(x, y *big.Int) []byte {
 		outdata    = (*C.uchar)(unsafe.Pointer(&out[0]))
 		outlen     = C.size_t(len(out))
 	)
-	if C.secp256k1_ext_reencode_pubkey(context, outdata, outlen, pubkeydata, pubkeylen) == 0 {
+	if C.vet_secp256k1_ext_reencode_pubkey(context, outdata, outlen, pubkeydata, pubkeylen) == 0 {
 		panic("libsecp256k1 error")
 	}
 	return out
